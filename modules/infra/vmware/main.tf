@@ -108,6 +108,10 @@ resource "vsphere_virtual_machine" "instance" {
       label            = "Hard disk 1"
       size             = var.vm_disk
       thin_provisioned = true
+      # ESXi reports 1000 shares for the default "normal" io_share_level, but
+      # the provider defaults io_share_count to 0, causing a perpetual in-place
+      # update on every plan. Pin it to what ESXi reports.
+      io_share_count = 1000
     }
   }
 
